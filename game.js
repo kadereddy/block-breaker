@@ -74,11 +74,7 @@ function drawPaddle() {
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-<<<<<<< HEAD
-  ctx.fillStyle = "#00aaaa";
-=======
   ctx.fillStyle = "#b86dff";
->>>>>>> ae8110c93c472475c9befc872886317af084597f
   ctx.fill();
   ctx.strokeStyle = "#FFD43B";
   ctx.lineWidth = 2;
