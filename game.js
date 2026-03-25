@@ -1,8 +1,8 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const scoreElement = document.getElementById('score');
-const livesElement = document.getElementById('lives');
-const messageElement = document.getElementById('message');
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const scoreElement = document.getElementById("score");
+const livesElement = document.getElementById("lives");
+const messageElement = document.getElementById("message");
 
 const PADDLE_WIDTH = 120;
 const PADDLE_HEIGHT = 15;
@@ -15,7 +15,7 @@ const BLOCK_PADDING = 10;
 const BLOCK_OFFSET_TOP = 60;
 const BLOCK_OFFSET_LEFT = 35;
 
-let gameState = 'ready';
+let gameState = "ready";
 let score = 0;
 let lives = 3;
 
@@ -25,7 +25,7 @@ const paddle = {
   width: PADDLE_WIDTH,
   height: PADDLE_HEIGHT,
   speed: 8,
-  dx: 0
+  dx: 0,
 };
 
 const ball = {
@@ -34,11 +34,18 @@ const ball = {
   radius: BALL_RADIUS,
   speed: 5,
   dx: 0,
-  dy: 0
+  dy: 0,
 };
 
 const blocks = [];
-const blockColors = ['#FF6B6B', '#f6de09', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
+const blockColors = [
+  "#6bffa4ff",
+  "#f6de09",
+  "#45B7D1",
+  "#FFA07A",
+  "#98D8C8",
+  "#F7DC6F",
+];
 
 function initBlocks() {
   blocks.length = 0;
@@ -50,16 +57,16 @@ function initBlocks() {
         width: BLOCK_WIDTH,
         height: BLOCK_HEIGHT,
         color: blockColors[row],
-        visible: true
+        visible: true,
       });
     }
   }
 }
 
 function drawPaddle() {
-  ctx.fillStyle = '#c5cd4e';
+  ctx.fillStyle = "#c5cd4e";
   ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
-  ctx.strokeStyle = '#3BB4AC';
+  ctx.strokeStyle = "#3BB4AC";
   ctx.lineWidth = 2;
   ctx.strokeRect(paddle.x, paddle.y, paddle.width, paddle.height);
 }
@@ -67,20 +74,20 @@ function drawPaddle() {
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-  ctx.fillStyle = '#FFE66D';
+  ctx.fillStyle = "#FFE66D";
   ctx.fill();
-  ctx.strokeStyle = '#FFD43B';
+  ctx.strokeStyle = "#FFD43B";
   ctx.lineWidth = 2;
   ctx.stroke();
   ctx.closePath();
 }
 
 function drawBlocks() {
-  blocks.forEach(block => {
+  blocks.forEach((block) => {
     if (block.visible) {
       ctx.fillStyle = block.color;
       ctx.fillRect(block.x, block.y, block.width, block.height);
-      ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+      ctx.strokeStyle = "rgba(0,0,0,0.2)";
       ctx.lineWidth = 2;
       ctx.strokeRect(block.x, block.y, block.width, block.height);
     }
@@ -105,7 +112,7 @@ function movePaddle() {
 }
 
 function moveBall() {
-  if (gameState !== 'playing') return;
+  if (gameState !== "playing") return;
 
   ball.x += ball.dx;
   ball.y += ball.dy;
@@ -121,12 +128,12 @@ function moveBall() {
   if (ball.y + ball.radius > canvas.height) {
     lives--;
     if (lives === 0) {
-      gameState = 'gameOver';
-      messageElement.textContent = 'Game Over! Press SPACE to restart';
+      gameState = "gameOver";
+      messageElement.textContent = "Game Over! Press SPACE to restart";
     } else {
       resetBall();
-      gameState = 'ready';
-      messageElement.textContent = 'Press SPACE to continue';
+      gameState = "ready";
+      messageElement.textContent = "Press SPACE to continue";
     }
   }
 }
@@ -141,14 +148,14 @@ function checkPaddleCollision() {
     ball.dy = -ball.dy;
 
     const hitPos = (ball.x - paddle.x) / paddle.width;
-    const angle = (hitPos - 0.5) * Math.PI / 3;
+    const angle = ((hitPos - 0.5) * Math.PI) / 3;
     ball.dx = ball.speed * Math.sin(angle);
     ball.dy = -ball.speed * Math.cos(angle);
   }
 }
 
 function checkBlockCollision() {
-  blocks.forEach(block => {
+  blocks.forEach((block) => {
     if (!block.visible) return;
 
     if (
@@ -161,10 +168,10 @@ function checkBlockCollision() {
       block.visible = false;
       score += 10;
 
-      const visibleBlocks = blocks.filter(b => b.visible).length;
+      const visibleBlocks = blocks.filter((b) => b.visible).length;
       if (visibleBlocks === 0) {
-        gameState = 'win';
-        messageElement.textContent = 'You Win! Press SPACE to restart';
+        gameState = "win";
+        messageElement.textContent = "You Win! Press SPACE to restart";
       }
     }
   });
@@ -178,19 +185,19 @@ function resetBall() {
 }
 
 function startGame() {
-  if (gameState === 'ready') {
-    gameState = 'playing';
-    const angle = (Math.random() - 0.5) * Math.PI / 4;
+  if (gameState === "ready") {
+    gameState = "playing";
+    const angle = ((Math.random() - 0.5) * Math.PI) / 4;
     ball.dx = ball.speed * Math.sin(angle);
     ball.dy = -ball.speed * Math.cos(angle);
-    messageElement.textContent = '';
-  } else if (gameState === 'gameOver' || gameState === 'win') {
+    messageElement.textContent = "";
+  } else if (gameState === "gameOver" || gameState === "win") {
     score = 0;
     lives = 3;
-    gameState = 'ready';
+    gameState = "ready";
     resetBall();
     initBlocks();
-    messageElement.textContent = 'Press SPACE to start';
+    messageElement.textContent = "Press SPACE to start";
   }
 }
 
@@ -213,11 +220,11 @@ function update() {
 }
 
 function keyDown(e) {
-  if (e.key === 'ArrowRight' || e.key === 'Right') {
+  if (e.key === "ArrowRight" || e.key === "Right") {
     paddle.dx = paddle.speed;
-  } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
+  } else if (e.key === "ArrowLeft" || e.key === "Left") {
     paddle.dx = -paddle.speed;
-  } else if (e.key === ' ' || e.key === 'Spacebar') {
+  } else if (e.key === " " || e.key === "Spacebar") {
     e.preventDefault();
     startGame();
   }
@@ -225,10 +232,10 @@ function keyDown(e) {
 
 function keyUp(e) {
   if (
-    e.key === 'ArrowRight' ||
-    e.key === 'Right' ||
-    e.key === 'ArrowLeft' ||
-    e.key === 'Left'
+    e.key === "ArrowRight" ||
+    e.key === "Right" ||
+    e.key === "ArrowLeft" ||
+    e.key === "Left"
   ) {
     paddle.dx = 0;
   }
@@ -247,9 +254,9 @@ function mouseMove(e) {
   }
 }
 
-document.addEventListener('keydown', keyDown);
-document.addEventListener('keyup', keyUp);
-canvas.addEventListener('mousemove', mouseMove);
+document.addEventListener("keydown", keyDown);
+document.addEventListener("keyup", keyUp);
+canvas.addEventListener("mousemove", mouseMove);
 
 initBlocks();
 update();
